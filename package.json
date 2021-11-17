@@ -1,0 +1,27 @@
+{
+  "name": "websocket-server-appointments-system",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Felipe-Navas/websocket-server-appointments-system.git"
+  },
+  "keywords": [],
+  "author": "Felipe Navas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Felipe-Navas/websocket-server-appointments-system/issues"
+  },
+  "homepage": "https://github.com/Felipe-Navas/websocket-server-appointments-system#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "socket.io": "^4.3.2"
+  }
+}
