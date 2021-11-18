@@ -1,3 +1,11 @@
 
+const searchParams = new URLSearchParams( window.location.search );
 
-console.log('Escritorio HTML');
+if ( searchParams.has('escritorio') ) {
+
+    window.location = 'index.html';
+    throw new Error('El escritorio es obligatorio');
+};
+
+
+const 

@@ -1,19 +1,18 @@
-const Appointment = require("../models/appointmet");
+const AppointmentsControl = require("../models/appointmet");
 
-const appointment = new Appointment();
+const appointmentsControl = new AppointmentsControl();
 
 
 const socketController = (socket) => {
 
-    socket.on('enviar-mensaje-cliente', ( payload, callback ) => {
+    socket.emit('ultimo-ticket', appointmentsControl.ultimo);
 
-        const id = 123456;
+    socket.on('siguiente-turno', ( payload, callback ) => {
 
-        // Asi llamo al callback que envio el cliente al servidor
-        callback( id );
+        const siguiente = appointmentsControl.siguiente();
+        callback( siguiente );
 
-        // Emito este evento hacia el cliente
-        socket.broadcast.emit('enviar-mensaje-servidor', payload);
+        // TODO: Notificar que hay un nuevo turno pendiente
     });
 };
 
