@@ -14,6 +14,32 @@ const socketController = (socket) => {
 
         // TODO: Notificar que hay un nuevo turno pendiente
     });
+
+    socket.on('atender-turno', ( { escritorio }, callback) => {
+        if ( !escritorio ) {
+            return callback({
+                ok: false,
+                msg: 'El escritorio es obligatorio'
+            });
+        };
+
+        const turno = appointmentsControl.atenderTurno( escritorio );
+
+        // TODO: Notificar cambio en los ultimos4
+
+
+        if ( !turno ) {
+            callback({
+                ok: false,
+                msg: 'No hay tickets para atender'
+            });
+        } else {
+            callback({
+                ok: true,
+                turno
+            });
+        };
+    });
 };
 
 

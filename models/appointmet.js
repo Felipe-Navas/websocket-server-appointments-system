@@ -65,12 +65,12 @@ class AppointmentsControl {
         };
 
         // Obtengo y borro el primer elemento del array
-        const turno = this.turno.shift();
+        const turno = this.turnos.shift();
 
         turno.escritorio = escritorio;
 
         // Agrego el turno a el array de los ultimos 4 al inicio
-        this.ultimos4.unshift( ticket );
+        this.ultimos4.unshift( turno );
 
         if ( this.ultimos4.length > 4 ) {
             // Borro el ultimo elemento del array
