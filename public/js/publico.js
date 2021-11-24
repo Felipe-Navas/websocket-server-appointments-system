@@ -13,6 +13,9 @@ const lblEscritorio4 = document.querySelector('#lblEscritorio4');
 const socket = io();
 
 socket.on('estado-actual', ( payload ) => {
+
+    const audio = new Audio('./audio/new-turno.mp3');
+    audio.play();
     
     const [ turno1, turno2, turno3, turno4 ] = payload;
     

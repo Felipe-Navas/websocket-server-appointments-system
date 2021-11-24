@@ -25,7 +25,7 @@ btnCrearbutton.addEventListener( 'click', () => {
     } );
 });
 
-socket.on('ultimo-ticket', (ultimo) => {
+socket.on('ultimo-turno', (ultimo) => {
 
-    lblNuevoTurno.innerText = 'Turno' + ultimo;
+    lblNuevoTurno.innerText = 'Turno ' + ultimo;
 });

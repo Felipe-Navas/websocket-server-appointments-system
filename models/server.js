@@ -32,7 +32,6 @@ class Server {
     };
 
     routes() {
-      //  this.app.use( this.paths.uploads, require('../routes/uploads'));
     };
 
     sockets() {

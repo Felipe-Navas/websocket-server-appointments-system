@@ -14,7 +14,7 @@ class Appointment {
 class AppointmentsControl {
 
     constructor() {
-        this.ultimo   = 1;
+        this.ultimo   = 0;
         this.hoy      = new Date().getDate();
         this.turnos   = [];
         this.ultimos4 = [];
@@ -65,7 +65,7 @@ class AppointmentsControl {
         };
 
         // Obtengo y borro el primer elemento del array
-        const turno = this.turnos.shift();
+        const turno = this.turnos.shift(); // this.turnos[0];
 
         turno.escritorio = escritorio;
 

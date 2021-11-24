@@ -1,11 +1,11 @@
-const AppointmentsControl = require("../models/appointmet");
+const AppointmentsControl = require('../models/appointmet');
 
 const appointmentsControl = new AppointmentsControl();
 
 
 const socketController = (socket) => {
 
-    socket.emit('ultimo-ticket', appointmentsControl.ultimo);
+    socket.emit('ultimo-turno', appointmentsControl.ultimo);
     socket.emit('estado-actual', appointmentsControl.ultimos4);
     socket.emit('turnos-pendientes', appointmentsControl.turnos.length);
 
@@ -37,7 +37,7 @@ const socketController = (socket) => {
         if ( !turno ) {
             callback({
                 ok: false,
-                msg: 'No hay tickets para atender'
+                msg: 'No hay turnos para atender'
             });
         } else {
             callback({

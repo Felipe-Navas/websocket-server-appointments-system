@@ -40,7 +40,7 @@ btnAtender.addEventListener( 'click', () => {
         };
         divAlerta.style.display = 'none';
 
-        lblTurno.innerText = `Ticket ${ turno.numero }`;
+        lblTurno.innerText = `Turno ${ turno.numero }`;
     });
 });
 
