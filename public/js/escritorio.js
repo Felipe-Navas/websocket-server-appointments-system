@@ -3,6 +3,7 @@ const lblEscritorio = document.querySelector('h1');
 const btnAtender    = document.querySelector('button');
 const lblTurno      = document.querySelector('small');
 const divAlerta     = document.querySelector('.alert');
+const lblPendientes = document.querySelector('#lblPendientes');
 
 
 const searchParams = new URLSearchParams( window.location.search );
@@ -37,12 +38,20 @@ btnAtender.addEventListener( 'click', () => {
             lblTurno.innerText = 'Nadie';
             return divAlerta.style.display = '';
         };
+        divAlerta.style.display = 'none';
 
         lblTurno.innerText = `Ticket ${ turno.numero }`;
     });
 });
 
-socket.on('ultimo-ticket', (ultimo) => {
+socket.on('turnos-pendientes', ( turnos_pendientes ) => {
 
-    // lblNuevoTurno.innerText = 'Turno' + ultimo;
+    if ( turnos_pendientes === 0) {
+        lblPendientes.style.display = 'none';
+        divAlerta.style.display = '';
+    } else {
+        divAlerta.style.display = 'none';
+        lblPendientes.style.display = '';
+        lblPendientes.innerText = turnos_pendientes;
+    };
 });

@@ -14,7 +14,7 @@ class Appointment {
 class AppointmentsControl {
 
     constructor() {
-        this.ultimo   = 10;
+        this.ultimo   = 1;
         this.hoy      = new Date().getDate();
         this.turnos   = [];
         this.ultimos4 = [];

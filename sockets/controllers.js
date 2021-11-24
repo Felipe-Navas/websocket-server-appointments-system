@@ -6,13 +6,16 @@ const appointmentsControl = new AppointmentsControl();
 const socketController = (socket) => {
 
     socket.emit('ultimo-ticket', appointmentsControl.ultimo);
+    socket.emit('estado-actual', appointmentsControl.ultimos4);
+    socket.emit('turnos-pendientes', appointmentsControl.turnos.length);
+
 
     socket.on('siguiente-turno', ( payload, callback ) => {
 
         const siguiente = appointmentsControl.siguiente();
         callback( siguiente );
 
-        // TODO: Notificar que hay un nuevo turno pendiente
+        socket.broadcast.emit('turnos-pendientes', appointmentsControl.turnos.length);
     });
 
     socket.on('atender-turno', ( { escritorio }, callback) => {
@@ -25,8 +28,11 @@ const socketController = (socket) => {
 
         const turno = appointmentsControl.atenderTurno( escritorio );
 
-        // TODO: Notificar cambio en los ultimos4
+        // Notifico el cambio de los ultimos4
+        socket.broadcast.emit('estado-actual', appointmentsControl.ultimos4);
 
+        socket.emit('turnos-pendientes', appointmentsControl.turnos.length);
+        socket.broadcast.emit('turnos-pendientes', appointmentsControl.turnos.length);
 
         if ( !turno ) {
             callback({
