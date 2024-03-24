@@ -10,8 +10,8 @@ class Appointment {
 
 class AppointmentsControl {
   constructor() {
-    this.ultimo = 0
-    this.hoy = new Date().getDate()
+    this.last = 0
+    this.today = new Date().getDate()
     this.appointments = []
     this.last4 = []
 
@@ -20,18 +20,18 @@ class AppointmentsControl {
 
   get toJSON() {
     return {
-      ultimo: this.ultimo,
-      hoy: this.hoy,
+      last: this.last,
+      today: this.today,
       appointments: this.appointments,
       last4: this.last4,
     }
   }
 
   init() {
-    const { ultimo, hoy, appointments, last4 } = require('../db/data.json')
-    if (hoy === this.hoy) {
+    const { last, today, appointments, last4 } = require('../db/data.json')
+    if (today === this.today) {
       this.appointments = appointments
-      this.last = ultimo
+      this.last = last
       this.last4 = last4
     } else {
       // It is another day
@@ -45,8 +45,8 @@ class AppointmentsControl {
   }
 
   nextAppointment() {
-    this.ultimo += 1
-    const appointment = new Appointment(this.ultimo, null)
+    this.last += 1
+    const appointment = new Appointment(this.last, null)
     this.appointments.push(appointment)
 
     this.saveDB()

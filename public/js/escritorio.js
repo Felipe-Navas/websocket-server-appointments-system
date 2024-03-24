@@ -11,7 +11,7 @@ const searchParams = new URLSearchParams( window.location.search );
 if ( !searchParams.has('escritorio') ) {
 
     window.location = 'index.html';
-    throw new Error('El escritorio es obligatorio');
+    throw new Error('The Desktop is mandatory');
 };
 
 
@@ -26,12 +26,12 @@ socket.on('connect', () => {
     btnAtender.disabled = false;
 });
 
-socket.on('disconnect', () => {    
+socket.on('disconnect', () => {
     btnAtender.disabled = true;
 });
 
 btnAtender.addEventListener( 'click', () => {
-    
+
     // Emito este evento hacia el servidor
     socket.emit( 'atender-turno', { escritorio }, ( { ok, msg, turno } ) => {
         if ( !ok ) {
@@ -44,7 +44,7 @@ btnAtender.addEventListener( 'click', () => {
     });
 });
 
-socket.on('turnos-pendientes', ( turnos_pendientes ) => {
+socket.on('pending-appointments', ( turnos_pendientes ) => {
 
     if ( turnos_pendientes === 0) {
         lblPendientes.style.display = 'none';

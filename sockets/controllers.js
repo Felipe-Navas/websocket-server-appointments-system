@@ -1,54 +1,55 @@
-const AppointmentsControl = require('../models/appointmet');
+const AppointmentsControl = require('../models/appointmet')
 
-const appointmentsControl = new AppointmentsControl();
-
+const appointmentsControl = new AppointmentsControl()
 
 const socketController = (socket) => {
+  socket.emit('last-appointment', appointmentsControl.last)
+  socket.emit('current-state', appointmentsControl.last4)
+  socket.emit('pending-appointments', appointmentsControl.appointments.length)
 
-    socket.emit('ultimo-turno', appointmentsControl.ultimo);
-    socket.emit('estado-actual', appointmentsControl.ultimos4);
-    socket.emit('turnos-pendientes', appointmentsControl.turnos.length);
+  socket.on('next-appointment', (payload, callback) => {
+    const nextAppointment = appointmentsControl.nextAppointment()
+    callback(nextAppointment)
 
+    socket.broadcast.emit(
+      'pending-appointments',
+      appointmentsControl.appointments.length
+    )
+  })
 
-    socket.on('next-appointment', ( payload, callback ) => {
+  socket.on('atender-turno', ({ desktop }, callback) => {
+    if (!desktop) {
+      return callback({
+        ok: false,
+        msg: 'The Desktop is mandatory',
+      })
+    }
 
-        const nextAppointment = appointmentsControl.nextAppointment();
-        callback( nextAppointment );
+    const appointment = appointmentsControl.atenderTurno(desktop)
 
-        socket.broadcast.emit('turnos-pendientes', appointmentsControl.turnos.length);
-    });
+    // I notify the change of the last 4
+    socket.broadcast.emit('current-state', appointmentsControl.last4)
 
-    socket.on('atender-turno', ( { escritorio }, callback) => {
-        if ( !escritorio ) {
-            return callback({
-                ok: false,
-                msg: 'El escritorio es obligatorio'
-            });
-        };
+    socket.emit('pending-appointments', appointmentsControl.appointments.length)
+    socket.broadcast.emit(
+      'pending-appointments',
+      appointmentsControl.appointments.length
+    )
 
-        const turno = appointmentsControl.atenderTurno( escritorio );
-
-        // Notifico el cambio de los ultimos4
-        socket.broadcast.emit('estado-actual', appointmentsControl.ultimos4);
-
-        socket.emit('turnos-pendientes', appointmentsControl.turnos.length);
-        socket.broadcast.emit('turnos-pendientes', appointmentsControl.turnos.length);
-
-        if ( !turno ) {
-            callback({
-                ok: false,
-                msg: 'No hay turnos para atender'
-            });
-        } else {
-            callback({
-                ok: true,
-                turno
-            });
-        };
-    });
-};
-
+    if (!appointment) {
+      callback({
+        ok: false,
+        msg: 'No hay turnos para atender',
+      })
+    } else {
+      callback({
+        ok: true,
+        appointment,
+      })
+    }
+  })
+}
 
 module.exports = {
-    socketController,
-};
+  socketController,
+}
