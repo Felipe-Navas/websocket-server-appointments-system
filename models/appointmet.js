@@ -1,86 +1,80 @@
-const path = require('path');
-const fs = require('fs');
-
+const path = require('path')
+const fs = require('fs')
 
 class Appointment {
-
-    constructor(numero, escritorio) {
-        this.numero = numero;
-        this.escritorio= escritorio;
-    };
-};
-
+  constructor(number, desktop) {
+    this.number = number
+    this.desktop = desktop
+  }
+}
 
 class AppointmentsControl {
+  constructor() {
+    this.ultimo = 0
+    this.hoy = new Date().getDate()
+    this.appointments = []
+    this.last4 = []
 
-    constructor() {
-        this.ultimo   = 0;
-        this.hoy      = new Date().getDate();
-        this.turnos   = [];
-        this.ultimos4 = [];
+    this.init()
+  }
 
-        this.init();
-    };
+  get toJSON() {
+    return {
+      ultimo: this.ultimo,
+      hoy: this.hoy,
+      appointments: this.appointments,
+      last4: this.last4,
+    }
+  }
 
-    get toJSON() {
-        return {
-            ultimo: this.ultimo,
-            hoy: this.hoy,
-            turnos: this.turnos,
-            ultimos4: this.ultimos4,
-        };
-    };
+  init() {
+    const { ultimo, hoy, appointments, last4 } = require('../db/data.json')
+    if (hoy === this.hoy) {
+      this.appointments = appointments
+      this.last = ultimo
+      this.last4 = last4
+    } else {
+      // It is another day
+      this.saveDB()
+    }
+  }
 
-    init() {
-        const { ultimo, hoy, turnos, ultimos4 } = require('../db/data.json');
-        if ( hoy === this.hoy ) {
-            this.turnos = turnos;
-            this.ultimos = ultimo;
-            this.ultimos4 = ultimos4;
-        } else {
-            // Es otro dia
-            this.guardarDB();
-        };
-    };
+  saveDB() {
+    const dbPath = path.join(__dirname, '../db/data.json')
+    fs.writeFileSync(dbPath, JSON.stringify(this.toJSON))
+  }
 
-    guardarDB() {
+  nextAppointment() {
+    this.ultimo += 1
+    const appointment = new Appointment(this.ultimo, null)
+    this.appointments.push(appointment)
 
-        const dbpath = path.join( __dirname, '../db/data.json');
-        fs.writeFileSync( dbpath, JSON.stringify( this.toJSON ))
-    };
+    this.saveDB()
+    return 'Appointment ' + appointment.number
+  }
 
-    siguiente() {
-        this.ultimo += 1;
-        const appointmet = new Appointment(this.ultimo, null);
-        this.turnos.push( appointmet );
+  atenderTurno(desktop) {
+    // If there are appointments
+    if (this.appointments.length === 0) {
+      return null
+    }
 
-        this.guardarDB();
-        return 'Turno ' + appointmet.numero
-    };
+    // Obtengo y borro el primer elemento del array
+    const appointment = this.appointments.shift() // this.appointments[0];
 
-    atenderTurno( escritorio ) {
-        // Si no hay turnos
-        if ( this.turnos.length === 0){
-            return null;
-        };
+    appointment.desktop = desktop
 
-        // Obtengo y borro el primer elemento del array
-        const turno = this.turnos.shift(); // this.turnos[0];
+    // Agrego el turno a el array de los ultimos 4 al inicio
+    this.last4.unshift(appointment)
 
-        turno.escritorio = escritorio;
+    if (this.last4.length > 4) {
+      // Borro el ultimo elemento del array
+      this.last4.splice(-1, 1)
+    }
 
-        // Agrego el turno a el array de los ultimos 4 al inicio
-        this.ultimos4.unshift( turno );
+    this.saveDB()
+    return appointment
+  }
+}
 
-        if ( this.ultimos4.length > 4 ) {
-            // Borro el ultimo elemento del array
-            this.ultimos4.splice( -1, 1 );
-        };
-
-        this.guardarDB();
-        return turno;
-    };
-};
-
-
-module.exports = AppointmentsControl;
+module.exports = AppointmentsControl

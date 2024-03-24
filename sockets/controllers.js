@@ -10,10 +10,10 @@ const socketController = (socket) => {
     socket.emit('turnos-pendientes', appointmentsControl.turnos.length);
 
 
-    socket.on('siguiente-turno', ( payload, callback ) => {
+    socket.on('next-appointment', ( payload, callback ) => {
 
-        const siguiente = appointmentsControl.siguiente();
-        callback( siguiente );
+        const nextAppointment = appointmentsControl.nextAppointment();
+        callback( nextAppointment );
 
         socket.broadcast.emit('turnos-pendientes', appointmentsControl.turnos.length);
     });

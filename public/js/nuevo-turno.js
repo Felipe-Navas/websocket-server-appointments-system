@@ -7,20 +7,20 @@ const socket = io();
 
 socket.on('connect', () => {
     // console.log('conectado');
-    
+
     btnCrearbutton.disabled = false;
 });
 
 socket.on('disconnect', () => {
     // console.log('Desconectado del servidor');
-    
+
     btnCrearbutton.disabled = true;
 });
 
 btnCrearbutton.addEventListener( 'click', () => {
-    
+
     // Emito este evento hacia el servidor
-    socket.emit( 'siguiente-turno', null, ( turno ) => {
+    socket.emit( 'next-appointment', null, ( turno ) => {
         lblNuevoTurno.innerText = turno;
     } );
 });
