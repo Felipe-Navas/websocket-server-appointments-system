@@ -1,4 +1,4 @@
-// Referencias de elementos html
+// HTML element references
 const lblDesktop = document.querySelector('h1');
 const btnAtender    = document.querySelector('button');
 const lblAppointment      = document.querySelector('small');
@@ -32,15 +32,15 @@ socket.on('disconnect', () => {
 
 btnAtender.addEventListener( 'click', () => {
 
-    // Emito este evento hacia el servidor
-    socket.emit( 'atender-turno', { desktop }, ( { ok, msg, turno } ) => {
+    // I emit this event to the server
+    socket.emit( 'atender-turno', { desktop }, ( { ok, msg, appointment } ) => {
         if ( !ok ) {
-            lblAppointment.innerText = 'Nadie';
+            lblAppointment.innerText = 'Nobody';
             return divAlert.style.display = '';
         };
         divAlert.style.display = 'none';
 
-        lblAppointment.innerText = `Turno ${ turno.numero }`;
+        lblAppointment.innerText = `Appointment ${ appointment.number }`;
     });
 });
 
