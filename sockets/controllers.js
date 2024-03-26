@@ -17,7 +17,7 @@ const socketController = (socket) => {
     )
   })
 
-  socket.on('atender-turno', ({ desktop }, callback) => {
+  socket.on('attend-appointment', ({ desktop }, callback) => {
     if (!desktop) {
       return callback({
         ok: false,
@@ -25,7 +25,7 @@ const socketController = (socket) => {
       })
     }
 
-    const appointment = appointmentsControl.atenderTurno(desktop)
+    const appointment = appointmentsControl.attendAppointment(desktop)
 
     // I notify the change of the last 4
     socket.broadcast.emit('current-state', appointmentsControl.last4)

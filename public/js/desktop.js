@@ -1,57 +1,52 @@
 // HTML element references
-const lblDesktop = document.querySelector('h1');
-const btnAtender    = document.querySelector('button');
-const lblAppointment      = document.querySelector('small');
-const divAlert     = document.querySelector('.alert');
-const lblPending = document.querySelector('#lblPending');
+const lblDesktop = document.querySelector('h1')
+const btnAttend = document.querySelector('button')
+const lblAppointment = document.querySelector('small')
+const divAlert = document.querySelector('.alert')
+const lblPending = document.querySelector('#lblPending')
 
+const searchParams = new URLSearchParams(window.location.search)
 
-const searchParams = new URLSearchParams( window.location.search );
+if (!searchParams.has('desktop')) {
+  window.location = 'index.html'
+  throw new Error('The Desktop is mandatory')
+}
 
-if ( !searchParams.has('desktop') ) {
+const desktop = searchParams.get('desktop')
+lblDesktop.innerText = desktop
 
-    window.location = 'index.html';
-    throw new Error('The Desktop is mandatory');
-};
+divAlert.style.display = 'none'
 
-
-const desktop = searchParams.get('desktop');
-lblDesktop.innerText = desktop;
-
-divAlert.style.display = 'none';
-
-const socket = io();
+const socket = io()
 
 socket.on('connect', () => {
-    btnAtender.disabled = false;
-});
+  btnAttend.disabled = false
+})
 
 socket.on('disconnect', () => {
-    btnAtender.disabled = true;
-});
+  btnAttend.disabled = true
+})
 
-btnAtender.addEventListener( 'click', () => {
+btnAttend.addEventListener('click', () => {
+  // I emit this event to the server
+  socket.emit('attend-appointment', { desktop }, ({ ok, msg, appointment }) => {
+    if (!ok) {
+      lblAppointment.innerText = 'Nobody'
+      return (divAlert.style.display = '')
+    }
+    divAlert.style.display = 'none'
 
-    // I emit this event to the server
-    socket.emit( 'atender-turno', { desktop }, ( { ok, msg, appointment } ) => {
-        if ( !ok ) {
-            lblAppointment.innerText = 'Nobody';
-            return divAlert.style.display = '';
-        };
-        divAlert.style.display = 'none';
+    lblAppointment.innerText = `Appointment ${appointment.number}`
+  })
+})
 
-        lblAppointment.innerText = `Appointment ${ appointment.number }`;
-    });
-});
-
-socket.on('pending-appointments', ( turnos_pendientes ) => {
-
-    if ( turnos_pendientes === 0) {
-        lblPending.style.display = 'none';
-        divAlert.style.display = '';
-    } else {
-        divAlert.style.display = 'none';
-        lblPending.style.display = '';
-        lblPending.innerText = turnos_pendientes;
-    };
-});
+socket.on('pending-appointments', (pending_appointments) => {
+  if (pending_appointments === 0) {
+    lblPending.style.display = 'none'
+    divAlert.style.display = ''
+  } else {
+    divAlert.style.display = 'none'
+    lblPending.style.display = ''
+    lblPending.innerText = pending_appointments
+  }
+})

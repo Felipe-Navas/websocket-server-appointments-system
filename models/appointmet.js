@@ -53,22 +53,22 @@ class AppointmentsControl {
     return 'Appointment ' + appointment.number
   }
 
-  atenderTurno(desktop) {
+  attendAppointment(desktop) {
     // If there are appointments
     if (this.appointments.length === 0) {
       return null
     }
 
-    // Obtengo y borro el primer elemento del array
+    // I get and delete the first element of the array
     const appointment = this.appointments.shift() // this.appointments[0];
 
     appointment.desktop = desktop
 
-    // Agrego el turno a el array de los ultimos 4 al inicio
+    // I add the appointment to the array of the last 4 at the beginning
     this.last4.unshift(appointment)
 
     if (this.last4.length > 4) {
-      // Borro el ultimo elemento del array
+      // I delete the last element of the array
       this.last4.splice(-1, 1)
     }
 

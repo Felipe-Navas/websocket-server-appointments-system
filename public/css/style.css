@@ -1,36 +1,35 @@
 html,
 body {
-    height: 100%;
-    width: 100%;
-    background-color: #6951F0;
-    color: white;
+  height: 100%;
+  width: 100%;
+  background-color: #6951f0;
+  color: white;
 }
 
 table {
-    width: 100%;
-    height: 100%;
-    text-align: center;
+  width: 100%;
+  height: 100%;
+  text-align: center;
 }
 
-.turno-actual {
-    background-color: #282828;
+.current-appointment {
+  background-color: #282828;
 }
 
-.turno-actual-numero {
-    font-size: 80px;
+.current-appointment-number {
+  font-size: 80px;
 }
 
-.current-appointment-destop {
-    font-size: 45px;
+.current-appointment-desktop {
+  font-size: 45px;
 }
 
-.turno-secundario {
-    font-size: 25px;
+.secondary-appointment {
+  font-size: 25px;
 }
 
+/* New Appointment */
 
-/* Nuevo-turno */
-
-#lblNuevoTurno {
-    font-size: 70px;
+#lblNewAppointment {
+  font-size: 70px;
 }
