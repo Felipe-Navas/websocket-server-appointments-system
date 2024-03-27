@@ -26,7 +26,7 @@ btnSend.addEventListener('click', () => {
 
   // I emit this event to the server
   socket.emit('send-message-client', payload, (id) => {
-    console.log('Desde el server', id)
+    console.log('From the server', id)
   })
 })
 
