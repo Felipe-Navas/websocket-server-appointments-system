@@ -1,44 +1,37 @@
+// HTML element references
+const lblOnline = document.querySelector('#lblOnline')
+const lblOffline = document.querySelector('#lblOffline')
+const txtMessage = document.querySelector('#txtMessage')
+const btnSend = document.querySelector('#btnSend')
 
-// Referencias de elementos html
-const lblOnline  = document.querySelector('#lblOnline');
-const lblOffline = document.querySelector('#lblOffline');
-const txtMensaje = document.querySelector('#txtMensaje');
-const btnEnviar  = document.querySelector('#btnEnviar');
-
-
-const socket = io();
+const socket = io()
 
 socket.on('connect', () => {
-    // console.log('conectado');
-    
-    lblOffline.style.display = 'none';
-    lblOnline.style.display  = '';
-});
+  lblOffline.style.display = 'none'
+  lblOnline.style.display = ''
+})
 
 socket.on('disconnect', () => {
-    // console.log('Desconectado del servidor');
+  lblOffline.style.display = ''
+  lblOnline.style.display = 'none'
+})
 
-    lblOffline.style.display = '';
-    lblOnline.style.display  = 'none';
-});
+btnSend.addEventListener('click', () => {
+  const message = txtMessage.value
+  const payload = {
+    message,
+    id: 'asd123!#D',
+    date: new Date().getDate(),
+  }
 
-btnEnviar.addEventListener( 'click', () => {
-    const mensaje = txtMensaje.value;
-    const payload = {
-        mensaje,
-        id: 'asd123!#D',
-        fecha: new Date().getDate()
-    };
-    
-    // Emito este evento hacia el servidor
-    socket.emit( 'enviar-mensaje-cliente', payload, ( id ) => {
-        console.log('Desde el server', id);
-    } );
-});
+  // I emit this event to the server
+  socket.emit('send-message-client', payload, (id) => {
+    console.log('Desde el server', id)
+  })
+})
 
-// Escucho el evento que viene desde el servidor
-socket.on('enviar-mensaje-servidor', (payload) => {
-
-    console.log(payload);
-    // txtMensaje.value = payload.mensaje;
-});
+// I listen to the event coming from the server
+socket.on('send-message-server', (payload) => {
+  console.log(payload)
+  // txtMessage.value = payload.message;
+})

@@ -1,4 +1,4 @@
-const AppointmentsControl = require('../models/appointmet')
+const AppointmentsControl = require('../models/appointment')
 
 const appointmentsControl = new AppointmentsControl()
 
@@ -39,7 +39,7 @@ const socketController = (socket) => {
     if (!appointment) {
       callback({
         ok: false,
-        msg: 'No hay turnos para atender',
+        msg: 'There are no appointments to attend',
       })
     } else {
       callback({
