@@ -16,12 +16,13 @@ In this app I use different methods to communicate the client and the server usi
 
 ### Installing
 
-- Create a `.env` file in the root of the project and configure the `PORT` variable
 - Clone the repository and install dependencies:
 
 ```
 git clone https://github.com/Felipe-Navas/websocket-server-appointments-system.git && cd websocket-server-appointments-system && npm install
 ```
+
+- Create a `.env` file in the root of the project and configure the `PORT` variable
 
 ### Executing program
 
